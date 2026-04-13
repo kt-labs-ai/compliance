@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — SoundLog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3a;
+      --accent: #f59e0b;
+      --accent-dim: rgba(245, 158, 11, 0.12);
+      --text-main: #f0f0f5;
+      --text-sub: #9ca3af;
+      --text-hint: #6b7280;
+      --radius: 12px;
+      --font-sans: 'Inter', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+
+    .header-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .app-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .app-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .app-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Language switcher */
+    .lang-switcher {
+      display: flex;
+      gap: 3px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--text-hint);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+      white-space: nowrap;
+    }
+
+    .lang-btn.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Hero */
+    .hero { margin-bottom: 48px; }
+
+    .page-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .page-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: var(--text-hint);
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* Section card */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      transition: border-color 0.15s;
+    }
+
+    .section-card:hover {
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    .section-number {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .section-body {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    /* Contact card */
+    .contact-card {
+      background: var(--accent-dim);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+
+    .contact-card .section-body a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-card .section-body a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-hint);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    /* Language content toggle */
+    [data-lang] { display: none; }
+    .lang-ja [data-lang="ja"] { display: block; }
+    .lang-en [data-lang="en"] { display: block; }
+    .lang-ko [data-lang="ko"] { display: block; }
+    .lang-zh [data-lang="zh"] { display: block; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      main { padding: 32px 16px 60px; }
+      .section-card, .contact-card { padding: 18px 20px; }
+      .header-inner { height: 56px; }
+      .lang-btn { padding: 4px 7px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body class="lang-ja">
+
+  <header>
+    <div class="header-inner">
+      <div class="app-badge">
+        <div class="app-icon">🔊</div>
+        <span class="app-name">SoundLog</span>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="setLang('zh')">中文</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+      <div data-lang="ja">
+        <div class="page-label">Legal</div>
+        <h1>プライバシーポリシー</h1>
+        <p class="hero-meta">最終更新: 2026年4月13日 &nbsp;·&nbsp; SoundLog</p>
+      </div>
+      <div data-lang="en">
+        <div class="page-label">Legal</div>
+        <h1>Privacy Policy</h1>
+        <p class="hero-meta">Last updated: April 13, 2026 &nbsp;·&nbsp; SoundLog</p>
+      </div>
+      <div data-lang="ko">
+        <div class="page-label">Legal</div>
+        <h1>개인정보 처리방침</h1>
+        <p class="hero-meta">최종 업데이트: 2026년 4월 13일 &nbsp;·&nbsp; SoundLog</p>
+      </div>
+      <div data-lang="zh">
+        <div class="page-label">Legal</div>
+        <h1>隐私政策</h1>
+        <p class="hero-meta">最后更新：2026年4月13日 &nbsp;·&nbsp; SoundLog</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Section 1 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 01</div>
+        <div class="section-title">収集する情報</div>
+        <div class="section-body">本アプリは以下の情報を端末内に保存します。
+・騒音録音データ（音声ファイル）
+・dB測定値（日時・最大値・平均値）
+・騒音の種類・方向・深刻度（入力した場合）
+・メモおよび写真（添付した場合）
+・報告者情報（氏名・マンション名・部屋番号・電話番号）
+・レポート送信履歴（送信日時・送信先メールアドレス・添付ファイル情報）
+・アプリ設定（言語・テーマ・通知設定等）</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 01</div>
+        <div class="section-title">Information We Collect</div>
+        <div class="section-body">This app stores the following data locally on your device:
+• Noise recordings (audio files)
+• dB measurements (date/time, max, average)
+• Noise type, direction, and severity (if entered)
+• Memos and photos (if attached)
+• Reporter info (name, building, room, phone number)
+• Report history (send date, recipient email, attachment info)
+• App settings (language, theme, notifications, etc.)</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 01</div>
+        <div class="section-title">수집하는 정보</div>
+        <div class="section-body">이 앱은 다음 정보를 기기에 로컬로 저장합니다.
+• 소음 녹음 데이터（오디오 파일）
+• dB 측정값（날짜/시간, 최대값, 평균값）
+• 소음 유형, 방향, 심각도（입력한 경우）
+• 메모 및 사진（첨부한 경우）
+• 보고자 정보（이름, 건물명, 호실, 전화번호）
+• 보고서 전송 이력（전송일, 수신자 이메일, 첨부 정보）
+• 앱 설정（언어, 테마, 알림 설정 등）</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 01</div>
+        <div class="section-title">收集的信息</div>
+        <div class="section-body">本应用在设备本地存储以下信息：
+• 噪音录音数据（音频文件）
+• dB测量值（日期/时间、最大值、平均值）
+• 噪音类型、方向和严重程度（如已输入）
+• 备注和照片（如已添加）
+• 报告人信息（姓名、楼栋名称、房间号、电话号码）
+• 报告发送记录（发送日期、收件人邮箱、附件信息）
+• 应用设置（语言、主题、通知设置等）</div>
+      </div>
+    </div>
+
+    <!-- ── Section 2 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 02</div>
+        <div class="section-title">端末の権限</div>
+        <div class="section-body">本アプリは以下の端末権限を使用します。
+・マイク：騒音の録音およびdB測定に使用します
+・通知：自動記録完了・週次サマリーの通知に使用します
+・カメラ/写真ライブラリ：証拠写真の撮影・添付に使用します
+・ストレージ：録音ファイルやPDFレポートの保存に使用します（Android 12以下）
+
+いずれの権限も、使用前に許可を求めます。許可しない場合でも、該当機能以外は利用できます。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 02</div>
+        <div class="section-title">Device Permissions</div>
+        <div class="section-body">This app uses the following device permissions:
+• Microphone: Used for noise recording and dB measurement
+• Notifications: Used for auto-record alerts and weekly summaries
+• Camera/Photo Library: Used to take and attach evidence photos
+• Storage: Used to save recordings and PDF reports (Android 12 and below)
+
+Permission is requested before each use. Features other than the one requiring a permission remain available if you decline.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 02</div>
+        <div class="section-title">기기 권한</div>
+        <div class="section-body">이 앱은 다음 기기 권한을 사용합니다.
+• 마이크: 소음 녹음 및 dB 측정에 사용
+• 알림: 자동 기록 완료 알림 및 주간 요약에 사용
+• 카메라/사진 라이브러리: 증거 사진 촬영 및 첨부에 사용
+• 저장소: 녹음 파일 및 PDF 보고서 저장에 사용（Android 12 이하）
+
+각 권한은 사용 전에 허가를 요청합니다. 허가하지 않아도 해당 기능 외에는 정상적으로 이용 가능합니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 02</div>
+        <div class="section-title">设备权限</div>
+        <div class="section-body">本应用使用以下设备权限：
+• 麦克风：用于噪音录制和dB测量
+• 通知：用于自动录制完成提醒和每周总结
+• 相机/照片库：用于拍摄和附加证据照片
+• 存储：用于保存录音文件和PDF报告（Android 12及以下）
+
+每项权限在使用前会请求授权。拒绝授权后，除该功能外的其他功能仍可正常使用。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 3 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 03</div>
+        <div class="section-title">データの保存場所</div>
+        <div class="section-body">すべてのデータは端末内（ローカルストレージ）にのみ保存されます。開発者のサーバーや外部クラウドサービスへの送信は一切行いません。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 03</div>
+        <div class="section-title">Data Storage</div>
+        <div class="section-body">All data is stored exclusively on your device (local storage). No data is transmitted to the developer's servers or any external cloud service.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 03</div>
+        <div class="section-title">데이터 저장 위치</div>
+        <div class="section-body">모든 데이터는 기기（로컬 스토리지）에만 저장됩니다. 개발자 서버나 외부 클라우드 서비스로 데이터가 전송되지 않습니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 03</div>
+        <div class="section-title">数据存储位置</div>
+        <div class="section-body">所有数据仅存储在您的设备本地存储中。不会向开发者服务器或任何外部云服务发送数据。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 4 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 04</div>
+        <div class="section-title">第三者サービス（RevenueCat）</div>
+        <div class="section-body">アプリ内課金の処理にRevenueCat（revenuecat.com）を使用しています。課金処理の際、RevenueCatは端末の匿名IDおよびトランザクション情報を取得します。RevenueCatのプライバシーポリシーはrevenuecat.com/privacy をご参照ください。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 04</div>
+        <div class="section-title">Third-Party Services (RevenueCat)</div>
+        <div class="section-body">This app uses RevenueCat (revenuecat.com) for in-app purchase processing. During purchases, RevenueCat collects an anonymous device ID and transaction information. See revenuecat.com/privacy for their privacy policy.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 04</div>
+        <div class="section-title">제3자 서비스（RevenueCat）</div>
+        <div class="section-body">이 앱은 앱 내 구매 처리를 위해 RevenueCat（revenuecat.com）을 사용합니다. 구매 시 RevenueCat은 익명 기기 ID와 거래 정보를 수집합니다. RevenueCat의 개인정보 처리방침은 revenuecat.com/privacy를 참조하세요.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 04</div>
+        <div class="section-title">第三方服务（RevenueCat）</div>
+        <div class="section-body">本应用使用RevenueCat（revenuecat.com）处理应用内购买。购买时，RevenueCat会收集匿名设备ID和交易信息。请参阅revenuecat.com/privacy了解其隐私政策。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 5 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 05</div>
+        <div class="section-title">データの共有</div>
+        <div class="section-body">本アプリは収集したデータを第三者と自動的に共有しません。「共有」機能でPDFレポートや音声ファイルを管理会社等に送信する場合は、ユーザー自身の判断と責任において行われます。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 05</div>
+        <div class="section-title">Data Sharing</div>
+        <div class="section-body">This app does not automatically share your data with third parties. When you use the Share feature to send PDF reports or audio files to a management company, you do so at your own discretion and responsibility.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 05</div>
+        <div class="section-title">데이터 공유</div>
+        <div class="section-body">이 앱은 수집한 데이터를 제3자와 자동으로 공유하지 않습니다. 공유 기능을 사용하여 PDF 보고서나 오디오 파일을 관리사무소 등에 전송하는 경우, 이는 사용자 본인의 판단과 책임 하에 이루어집니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 05</div>
+        <div class="section-title">数据共享</div>
+        <div class="section-body">本应用不会自动与第三方共享您的数据。当您使用共享功能将PDF报告或音频文件发送给物业管理公司等时，由您自行判断和负责。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 6 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 06</div>
+        <div class="section-title">データの削除</div>
+        <div class="section-body">設定画面の「データの削除」機能ですべての記録・レポートを削除できます。アプリをアンインストールすると、端末に保存されたすべてのデータも削除されます。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 06</div>
+        <div class="section-title">Data Deletion</div>
+        <div class="section-body">You can delete all records and reports using the "Delete Data" option in Settings. Uninstalling the app also removes all locally stored data.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 06</div>
+        <div class="section-title">데이터 삭제</div>
+        <div class="section-body">설정 화면의 '데이터 삭제' 기능으로 모든 기록과 보고서를 삭제할 수 있습니다. 앱을 삭제하면 기기에 저장된 모든 데이터도 함께 삭제됩니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 06</div>
+        <div class="section-title">数据删除</div>
+        <div class="section-body">您可以使用设置中的「删除数据」功能删除所有记录和报告。卸载应用也会删除设备上存储的所有数据。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 7 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 07</div>
+        <div class="section-title">子どものプライバシー</div>
+        <div class="section-body">本アプリは13歳未満の方を対象としていません。13歳未満の方の情報を意図的に収集することはありません。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 07</div>
+        <div class="section-title">Children's Privacy</div>
+        <div class="section-body">This app is not intended for users under the age of 13. We do not knowingly collect information from children under 13.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 07</div>
+        <div class="section-title">아동 개인정보 보호</div>
+        <div class="section-body">이 앱은 만 14세 미만의 사용자를 대상으로 하지 않습니다. 만 14세 미만 아동의 정보를 의도적으로 수집하지 않습니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 07</div>
+        <div class="section-title">儿童隐私</div>
+        <div class="section-body">本应用不面向13岁以下的用户。我们不会故意收集13岁以下儿童的信息。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 8 ── -->
+    <div class="section-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 08</div>
+        <div class="section-title">ポリシーの変更</div>
+        <div class="section-body">本ポリシーを変更する場合は、アプリのアップデートを通じてお知らせします。</div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 08</div>
+        <div class="section-title">Changes to This Policy</div>
+        <div class="section-body">If this policy is updated, we will notify you through an app update.</div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 08</div>
+        <div class="section-title">방침 변경</div>
+        <div class="section-body">이 방침이 변경될 경우, 앱 업데이트를 통해 알려드립니다.</div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 08</div>
+        <div class="section-title">政策变更</div>
+        <div class="section-body">如果本政策发生变更，我们将通过应用更新通知您。</div>
+      </div>
+    </div>
+
+    <!-- ── Section 9 — Contact ── -->
+    <div class="contact-card">
+      <div data-lang="ja">
+        <div class="section-number">Section 09</div>
+        <div class="section-title">お問い合わせ</div>
+        <div class="section-body">本ポリシーに関するご質問は、下記までご連絡ください。
+メール: <a href="mailto:kt.labs.ai@gmail.com">kt.labs.ai@gmail.com</a></div>
+      </div>
+      <div data-lang="en">
+        <div class="section-number">Section 09</div>
+        <div class="section-title">Contact Us</div>
+        <div class="section-body">If you have questions about this policy, please contact us at:
+Email: <a href="mailto:kt.labs.ai@gmail.com">kt.labs.ai@gmail.com</a></div>
+      </div>
+      <div data-lang="ko">
+        <div class="section-number">Section 09</div>
+        <div class="section-title">문의처</div>
+        <div class="section-body">이 방침에 관한 문의 사항은 아래로 연락해 주세요.
+이메일: <a href="mailto:kt.labs.ai@gmail.com">kt.labs.ai@gmail.com</a></div>
+      </div>
+      <div data-lang="zh">
+        <div class="section-number">Section 09</div>
+        <div class="section-title">联系我们</div>
+        <div class="section-body">如果您对本政策有任何疑问，请通过以下方式联系我们：
+邮箱：<a href="mailto:kt.labs.ai@gmail.com">kt.labs.ai@gmail.com</a></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>SoundLog &nbsp;·&nbsp; © 2026 All rights reserved.</p>
+    <p style="margin-top:4px;">
+      <span data-lang="ja">最終更新: 2026年4月13日</span>
+      <span data-lang="en">Last updated: April 13, 2026</span>
+      <span data-lang="ko">최종 업데이트: 2026년 4월 13일</span>
+      <span data-lang="zh">最后更新：2026年4月13日</span>
+    </p>
+  </footer>
+
+  <script>
+    function setLang(lang) {
+      document.body.className = 'lang-' + lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick') === `setLang('${lang}')`);
+      });
+    }
+  </script>
+
+</body>
+</html>
