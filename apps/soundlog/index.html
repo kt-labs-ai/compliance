@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoundLog - iPhone向け騒音記録・管理会社報告アプリ</title>
+  <meta name="description" content="SoundLogは、騒音のdB・日時・音声をiPhoneで記録し、管理会社への相談に使えるPDF報告書と音声添付まで支援するアプリです。">
+  <link rel="canonical" href="https://kt-labs-ai.github.io/compliance/apps/soundlog/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SoundLog - 騒音を記録し、PDFと音声で相談へ">
+  <meta property="og:description" content="dB・日時・音声をワンタップで記録。管理会社への共有に使える報告書まで、iPhoneでまとめられます。">
+  <meta property="og:url" content="https://kt-labs-ai.github.io/compliance/apps/soundlog/">
+  <meta property="og:image" content="https://kt-labs-ai.github.io/compliance/apps/soundlog/assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SoundLog - 騒音を記録し、PDFと音声で相談へ">
+  <meta name="twitter:description" content="dB・日時・音声をワンタップで記録。管理会社への共有に使える報告書まで、iPhoneでまとめられます。">
+  <meta name="twitter:image" content="https://kt-labs-ai.github.io/compliance/apps/soundlog/assets/ogp.png">
+  <style>
+    :root {
+      --bg:#0A0B0E; --page:#0E0F12; --card:#1B1E24; --card2:#16181D;
+      --text:#ECEEF2; --dim:#B4B9C4; --mute:#7C818C;
+      --teal:#4ECDC4; --orange:#FF8F00; --red:#E24B4A; --amber:#EF9F27;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--bg); color:var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+      letter-spacing:0; overflow-x:hidden;
+    }
+    body::before {
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.9; z-index:-1;
+      background:
+        radial-gradient(circle at 4% 2%, rgba(255,143,0,.24), transparent 32rem),
+        radial-gradient(circle at 92% 20%, rgba(78,205,196,.16), transparent 34rem),
+        radial-gradient(circle at 24% 78%, rgba(226,75,74,.10), transparent 28rem);
+    }
+    a { color:inherit; text-decoration:none; }
+    .wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+    header {
+      position:sticky; top:0; z-index:20; backdrop-filter: blur(18px);
+      background:rgba(10,11,14,.72); border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav { height:84px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:14px; min-width:280px; }
+    .brand img { width:56px; height:56px; border-radius:18px; object-fit:cover; box-shadow:0 16px 44px rgba(255,143,0,.35); }
+    .brand img.wordmark { width:170px; height:auto; border-radius:0; object-fit:contain; box-shadow:none; }
+    .brand strong { display:block; font-size:22px; line-height:1; }
+    .brand span { display:block; margin-top:6px; color:var(--mute); font-size:12px; font-weight:700; }
+    nav { display:flex; gap:28px; color:rgba(255,255,255,.58); font-weight:800; font-size:14px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:15px 22px;
+      font-weight:900; background:rgba(255,255,255,.04); color:#fff;
+    }
+    .btn.primary { background:var(--teal); color:#071113; border-color:transparent; box-shadow:0 0 36px rgba(78,205,196,.28); }
+    .section { padding:100px 0; }
+    .label {
+      display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04);
+      color:var(--teal); text-transform:uppercase; letter-spacing:0; font-size:12px; font-weight:900;
+    }
+    .label::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--teal); }
+    h1 { margin:32px 0 0; font-size:clamp(42px, 5.8vw, 76px); line-height:1.14; letter-spacing:0; }
+    h1 span, .grad { background:linear-gradient(90deg,var(--teal),#fff,var(--orange)); -webkit-background-clip:text; color:transparent; }
+    h1 .line { display:block; white-space:nowrap; }
+    h1 .plain { background:none; -webkit-background-clip:initial; color:#fff; }
+    h1 .gold { background:none; -webkit-background-clip:initial; color:#FFD89A; }
+    h2 { margin:28px 0 0; font-size:clamp(36px, 5vw, 64px); line-height:1.12; letter-spacing:0; }
+    h2.balanced { line-height:1.18; max-width:980px; margin-left:auto; margin-right:auto; }
+    h3 { margin:0; font-size:28px; letter-spacing:0; }
+    p { color:rgba(236,238,242,.66); line-height:1.9; font-size:18px; }
+    .hero { display:grid; grid-template-columns:1.02fr .98fr; gap:40px; align-items:center; padding:88px 0 110px; }
+    .hero-copy p { max-width:680px; font-size:21px; }
+    .cta { display:flex; gap:16px; flex-wrap:wrap; margin-top:34px; }
+    .badges { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:30px; max-width:680px; }
+    .badge { border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.035); border-radius:18px; padding:14px 12px; text-align:center; color:rgba(255,255,255,.66); font-weight:900; font-size:14px; }
+    .phones { position:relative; min-height:720px; }
+    .glow { position:absolute; left:50%; top:8%; transform:translateX(-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(78,205,196,.18),transparent 64%); }
+    .phone {
+      width:290px; border:1px solid rgba(255,255,255,.12); border-radius:38px; padding:9px;
+      background:#08090B; box-shadow:0 34px 100px rgba(0,0,0,.55);
+    }
+    .phone img { display:block; width:100%; border-radius:30px; border:1px solid rgba(255,255,255,.08); background:#0E0F12; }
+    .phone.one { position:absolute; left:2%; top:20px; transform:rotate(-5deg); z-index:2; }
+    .phone.two { position:absolute; right:0; top:90px; transform:rotate(4deg); z-index:1; }
+    .hero-note {
+      position:absolute; left:50%; bottom:30px; transform:translateX(-50%);
+      width:88%; border:1px solid rgba(255,255,255,.1); background:rgba(22,24,29,.88); backdrop-filter:blur(14px);
+      border-radius:30px; padding:20px; display:flex; align-items:center; gap:16px; box-shadow:0 20px 80px rgba(0,0,0,.44);
+    }
+    .hero-note img { width:48px; height:48px; border-radius:16px; object-fit:cover; }
+    .hero-note b { display:block; }
+    .hero-note small { color:var(--mute); }
+    .hero-note em { margin-left:auto; font-style:normal; color:var(--teal); background:rgba(78,205,196,.14); border-radius:999px; padding:8px 12px; font-size:12px; font-weight:900; }
+    .soft { background:rgba(255,255,255,.025); border-top:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08); }
+    .grid2 { display:grid; grid-template-columns:.88fr 1.12fr; gap:56px; align-items:start; }
+    .cards3, .cards4, .pricing { display:grid; gap:22px; }
+    .cards3 { grid-template-columns:repeat(3,1fr); }
+    .cards4 { grid-template-columns:repeat(4,1fr); }
+    .card {
+      border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.045);
+      border-radius:30px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,.22);
+    }
+    .card .icon { width:52px; height:52px; display:grid; place-items:center; border-radius:18px; background:rgba(78,205,196,.12); color:var(--teal); font-size:25px; font-weight:900; margin-bottom:20px; }
+    .image-card { padding:16px; }
+    .image-card img { width:100%; display:block; border-radius:22px; border:1px solid rgba(255,255,255,.10); }
+    .image-card h3 { padding:18px 8px 0; font-size:22px; }
+    .image-card p { padding:0 8px 2px; margin-top:8px; font-size:14px; }
+    .center { text-align:center; max-width:860px; margin:0 auto; }
+    .flow { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:64px; }
+    .feature-row { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; margin:96px 0; }
+    .feature-row.reverse > div:first-child { order:2; }
+    .feature-row .phone { margin:0 auto; }
+    .check-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:26px; }
+    .check { background:rgba(255,255,255,.04); border-radius:18px; padding:15px; color:rgba(255,255,255,.7); font-weight:900; }
+    .check::before { content:"✓"; color:var(--teal); margin-right:10px; }
+    .pricing { grid-template-columns:repeat(3,1fr); margin-top:64px; }
+    .price { position:relative; display:flex; flex-direction:column; height:100%; }
+    .price h3 { min-height:64px; }
+    .price p { min-height:74px; }
+    .price .amount { min-height:44px; }
+    .price-note { min-height:40px; color:rgba(255,255,255,.42); font-size:12px; font-weight:800; margin-top:8px; line-height:1.55; }
+    .price .btn { margin-top:20px; }
+    .price ul { margin-top:24px; }
+    .price.reco { background:rgba(78,205,196,.10); border-color:rgba(78,205,196,.55); box-shadow:0 0 80px rgba(78,205,196,.18); }
+    .reco-mark { position:absolute; top:-16px; left:24px; background:var(--teal); color:#071113; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:900; }
+    .price .amount { font-size:34px; font-weight:1000; color:#fff; margin-top:22px; }
+    .price ul { list-style:none; padding:0; margin:24px 0 0; color:rgba(255,255,255,.66); line-height:2.1; }
+    .price li::before { content:"✓"; color:var(--teal); margin-right:10px; }
+    details { border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04); border-radius:26px; padding:24px; margin-top:14px; }
+    summary { cursor:pointer; font-weight:1000; font-size:20px; }
+    footer { border-top:1px solid rgba(255,255,255,.08); padding:40px 0; color:rgba(255,255,255,.42); }
+    footer .wrap { display:flex; justify-content:space-between; gap:24px; align-items:center; }
+    .final {
+      text-align:center; border:1px solid rgba(255,255,255,.10); border-radius:42px; padding:58px 30px;
+      background:radial-gradient(circle at 20% 20%,rgba(78,205,196,.18),transparent 35%), linear-gradient(135deg,rgba(255,143,0,.16),rgba(78,205,196,.08),rgba(255,255,255,.04));
+      box-shadow:0 30px 110px rgba(0,0,0,.35);
+    }
+    .final img { width:96px; height:96px; border-radius:30px; object-fit:cover; box-shadow:0 18px 55px rgba(255,143,0,.45); }
+
+    .wordmark { display:block; width:220px; height:auto; object-fit:contain; filter:drop-shadow(0 10px 26px rgba(0,0,0,.36)); }
+    .brand-wordmark { width:170px; }
+    .hero-wordmark { width:min(440px, 88vw); margin-bottom:22px; }
+    .final-wordmark { width:min(360px, 82vw); margin:0 auto 24px; }
+    @media (max-width:640px) { .brand-wordmark { width:138px; } .hero-wordmark { width:min(320px, 86vw); } }
+
+    @media (max-width: 980px) {
+      nav { display:none; }
+      .hero, .grid2, .feature-row { grid-template-columns:1fr; }
+      .phones { min-height:680px; }
+      .phone.one { left:4%; }
+      .phone.two { right:4%; }
+      .cards3, .cards4, .pricing, .flow { grid-template-columns:1fr 1fr; }
+      .badges { grid-template-columns:1fr 1fr; }
+      .feature-row.reverse > div:first-child { order:0; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding:0 18px; }
+      header .btn { display:none; }
+      .brand strong { font-size:18px; }
+      h1 { font-size:40px; }
+      .cards3, .cards4, .pricing, .flow { grid-template-columns:1fr; }
+      .phone { width:250px; }
+      .phone.one { position:relative; left:auto; top:auto; margin:20px auto 0; }
+      .phone.two, .hero-note { display:none; }
+      .phones { min-height:auto; }
+      .section { padding:76px 0; }
+      footer .wrap { flex-direction:column; align-items:flex-start; }
+    }
+  
+    header .brand { min-width:300px; gap:14px; }
+    header .brand img.app-icon-header {
+      display:block !important;
+      width:56px !important;
+      height:56px !important;
+      min-width:56px !important;
+      border-radius:18px !important;
+      object-fit:cover !important;
+      box-shadow:0 16px 44px rgba(255,143,0,.35) !important;
+      background:#ff8f00 !important;
+    }
+    header .brand img.logo-header {
+      display:block !important;
+      width:170px !important;
+      height:auto !important;
+      border-radius:0 !important;
+      object-fit:contain !important;
+      box-shadow:none !important;
+      background:transparent !important;
+    }
+
+  
+    .app-store-cta { margin-top:22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    .app-store-cta .app-store-badge {
+      display:block;
+      width:178px;
+      height:auto;
+      border-radius:0;
+      box-shadow:none;
+      transition:transform .2s ease, filter .2s ease;
+    }
+    .app-store-cta .app-store-badge:hover { transform:translateY(-2px); filter:brightness(1.08); }
+    .app-store-note { color:rgba(255,255,255,.48); font-size:12px; font-weight:800; line-height:1.6; }
+    @media (max-width:640px) {
+      .app-store-cta { justify-content:flex-start; }
+      .app-store-cta .app-store-badge { width:164px; }
+    }
+
+  </style>
+  <link rel="preload" as="image" href="assets/record.png">
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="./">
+        <img decoding="async" class="app-icon-header" src="assets/app-icon.png" alt="SoundLogアプリアイコン">
+        <img decoding="async" class="logo-header" src="assets/soundlog-logo.png" alt="SoundLogロゴ">
+      </a>
+      <nav>
+        <a href="#screens">画面</a><a href="#report">報告書</a><a href="#features">機能</a><a href="#pricing">料金</a><a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn" href="https://apps.apple.com/app/id6766467501">無料で始める</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div class="hero-copy">
+        <div class="label">iPhone noise report app</div>
+        <img decoding="async" src="assets/soundlog-logo.png" alt="SoundLogロゴ" class="wordmark hero-wordmark">
+        <h1><span class="line plain">騒音の記録を、</span><span class="line">管理会社に出せる</span><span class="line gold">報告書へ。</span></h1>
+        <p>録音・dB・日時・メモをまとめて、PDFレポートを自動作成。音声ファイルも添付して、そのまま相談メールに使えます。</p>
+        <div class="cta">
+          <a class="btn primary" href="https://apps.apple.com/app/id6766467501">無料で記録をはじめる ›</a>
+          <a class="btn" href="#report">報告書サンプルを見る ›</a>
+        </div>
+        <div class="app-store-cta">
+          <a href="https://apps.apple.com/app/id6766467501" aria-label="App StoreでSoundLogを開く">
+            <img decoding="async" class="app-store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+          </a>
+          <div class="app-store-note">iPhone向けアプリです。App Storeで入手できます。</div>
+        </div>
+        <div class="badges">
+          <div class="badge">PDF自動生成</div><div class="badge">音声添付</div><div class="badge">送信前確認</div><div class="badge">端末内保存</div>
+        </div>
+      </div>
+      <div class="phones">
+        <div class="glow"></div>
+        <div class="phone one"><img decoding="async" src="assets/record.png" alt="SoundLog 記録画面"></div>
+        <div class="phone two"><img decoding="async" src="assets/report-actions.png" alt="SoundLog レポート画面"></div>
+        <div class="hero-note">
+          <img decoding="async" src="assets/record-thumb.png" alt="">
+          <div><b>実際のアプリ画面で、そのまま報告まで</b><small>記録 → PDF作成 → 音声添付 → メール送信</small></div>
+          <em>3件 → PDF</em>
+        </div>
+      </div>
+    </section>
+
+    <section class="soft section">
+      <div class="wrap grid2">
+        <div>
+          <div class="label">Problem</div>
+          <h2>管理会社に相談したいのに、うまく伝えられない。</h2>
+          <p>騒音トラブルは、つらさを感じていても、いざ説明しようとすると曖昧になりがちです。何時に、どんな音が、どのくらい続いたのか。SoundLogは、その説明を記録で支えます。</p>
+        </div>
+        <div class="cards3">
+          <div class="card"><div class="icon">⏱</div><h3>日時を思い出せない</h3><p>深夜や早朝の騒音は、後から正確に説明しづらいものです。</p></div>
+          <div class="card"><div class="icon">♪</div><h3>口頭だけでは弱い</h3><p>“うるさいです”だけでは、頻度や深刻さが伝わりにくくなります。</p></div>
+          <div class="card"><div class="icon">▣</div><h3>報告文が面倒</h3><p>メモ、録音、添付、文面作成を別々に行うと続きません。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screens" class="wrap section">
+      <div class="center">
+        <div class="label">Actual screens</div>
+        <h2>実際の画面で、記録から報告まで迷わない。</h2>
+        <p>実際のアプリ画面で、記録から報告までの流れを確認できます。</p>
+      </div>
+      <div class="cards4" style="margin-top:64px">
+        <div class="card image-card"><img decoding="async" loading="lazy" src="assets/record.png" alt="記録画面"><h3>記録</h3><p>dB・環境基準・録音を一画面で確認できます。</p></div>
+        <div class="card image-card"><img decoding="async" loading="lazy" src="assets/detail-save.png" alt="詳細保存画面"><h3>詳細保存</h3><p>種類、方向、深刻度、写真、メモを追加できます。</p></div>
+        <div class="card image-card"><img decoding="async" loading="lazy" src="assets/stats-top.png" alt="統計画面"><h3>統計</h3><p>件数、平均dB、最大dB、最多曜日を確認できます。</p></div>
+        <div class="card image-card"><img decoding="async" loading="lazy" src="assets/history.png" alt="履歴画面"><h3>履歴</h3><p>送信済みレポートと添付音声を後から見返せます。</p></div>
+      </div>
+    </section>
+
+    <section id="report" class="soft section">
+      <div class="wrap">
+        <div class="center">
+          <div class="label">Report package</div>
+          <h2 class="balanced">相談文を考える手間も、<br>添付ファイルを探す手間も減らせます。</h2>
+          <p>記録をためるだけではなく、ユーザー自身が確認して共有できるPDFと音声ファイルにまとめ、送信前の確認まで支援します。</p>
+        </div>
+        <div class="flow">
+          <div class="card image-card"><img decoding="async" loading="lazy" src="assets/report-template.png" alt="テンプレート選択"><h3>1. テンプレートを選ぶ</h3><p>初回相談、エスカレーション、正式苦情、緊急報告から状況に合う文面を選べます。</p></div>
+          <div class="card image-card"><img decoding="async" loading="lazy" src="assets/report-attach.png" alt="添付ファイル確認"><h3>2. 添付ファイルを確認</h3><p>PDFと音声ファイルを一覧で確認。必要なものだけ添付して送れます。</p></div>
+          <div class="card image-card"><img decoding="async" loading="lazy" src="assets/report-mail.png" alt="メール内容確認"><h3>3. メール内容を確認</h3><p>対象期間、件数、平均dB、最大dBを反映した本文を確認できます。</p></div>
+        </div>
+
+        <div class="feature-row">
+          <div>
+            <div class="label">PDF report</div>
+            <h2>管理会社が確認しやすい形に、自動で整理。</h2>
+            <p>報告対象期間、記録件数、平均dB・最大dB、騒音種別、発生源方向、曜日・時間帯の傾向、添付音声の対応表まで。相談に必要な情報をまとめます。</p>
+            <div class="check-grid">
+              <div class="check">記録一覧</div><div class="check">音声対応表</div><div class="check">環境基準との比較</div><div class="check">生活への影響</div>
+            </div>
+          </div>
+          <div class="phone"><img decoding="async" loading="lazy" src="assets/pdf-preview.png" alt="レポート内容プレビュー"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <div class="feature-row">
+        <div>
+          <div class="label">Mail flow</div>
+          <h2>PDFと音声をまとめて、管理会社へ。</h2>
+          <p>件名・本文をテンプレートから生成し、PDF報告書と音声ファイルを添付。送信前に内容を確認できるため、落ち着いて相談できます。</p>
+        </div>
+        <div class="phone"><img decoding="async" loading="lazy" src="assets/report-mail.png" alt="メールアプリで送信"></div>
+      </div>
+      <div class="feature-row reverse">
+        <div>
+          <div class="label">Statistics</div>
+          <h2>記録がたまるほど、状況が見える。</h2>
+          <p>曜日・時間帯の傾向や最大dBを見える化。口頭だけでは伝わりにくい騒音の発生パターンを整理できます。</p>
+        </div>
+        <div class="phone"><img decoding="async" loading="lazy" src="assets/stats-trend.png" alt="統計トレンド"></div>
+      </div>
+      <div class="feature-row">
+        <div>
+          <div class="label">Auto recording</div>
+          <h2>気づけなかった騒音も、残しやすく。</h2>
+          <p>自動監視モードでは、設定したdBを超えたときに短時間の録音を保存できます。手動で録音ボタンを押せない場面を補助します。</p>
+        </div>
+        <div class="phone"><img decoding="async" loading="lazy" src="assets/auto-recording.png" alt="自動録音中画面"></div>
+      </div>
+    </section>
+
+    <section id="features" class="soft section">
+      <div class="wrap">
+        <div style="max-width:760px">
+          <div class="label">Features</div>
+          <h2>記録、整理、報告。必要な機能をひとつに。</h2>
+        </div>
+        <div class="cards3" style="margin-top:56px">
+          <div class="card"><div class="icon" style="color:var(--red)">●</div><h3>ワンタップ録音</h3><p>騒音が起きた瞬間に、dB・日時・音声をすぐ記録。</p></div>
+          <div class="card"><div class="icon">▤</div><h3>騒音日記</h3><p>日付ごとの記録を一覧化。音声再生やメモ確認もできます。</p></div>
+          <div class="card"><div class="icon" style="color:var(--amber)">▥</div><h3>統計・傾向分析</h3><p>平均dB、最大dB、曜日・時間帯の傾向を見える化します。</p></div>
+          <div class="card"><div class="icon" style="color:var(--amber)">♪</div><h3>自動録音モード</h3><p>設定したdBを超えたときに自動で録音します。</p></div>
+          <div class="card"><div class="icon">▣</div><h3>PDF報告書</h3><p>記録一覧・統計・添付音声の対応表をPDFにまとめます。</p></div>
+          <div class="card"><div class="icon">✉</div><h3>管理会社へ送信</h3><p>ユーザー自身のメール作成画面で、PDFと音声ファイルを添付して送信できます。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <div class="center">
+        <div class="label">Before / After</div>
+        <h2>口頭の相談から、記録に基づく相談へ。</h2>
+      </div>
+      <div class="cards3" style="grid-template-columns:1fr 1fr; margin-top:56px">
+        <div class="card" style="background:rgba(226,75,74,.08); border-color:rgba(226,75,74,.20)">
+          <div style="color:var(--red); font-weight:1000; letter-spacing:0; border-color:rgba(78,205,196,.28)">
+          <div style="color:var(--teal); font-weight:1000; letter-spacing:0;border-radius:0;box-shadow:none">
+        <h2>今日の騒音を、まずは記録に残してみませんか？</h2>
+        <p style="max-width:680px; margin:22px auto 0">あとから説明しようとすると、記憶は曖昧になります。SoundLogなら、その場の記録を、管理会社に伝えやすい形へ整理できます。</p>
+        <div class="cta" style="justify-content:center">
+          <a class="btn primary" href="https://apps.apple.com/app/id6766467501">無料で記録をはじめる ›</a>
+          <a class="btn" href="#report">報告書サンプルを見る ›</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="brand"><img decoding="async" loading="lazy" src="assets/soundlog-logo.png" alt="SoundLogロゴ" class="wordmark brand-wordmark" style="width:170px;height:auto;border-radius:0;box-shadow:none;object-fit:contain"><div><span>© SoundLog</span></div></div>
+      <div style="display:flex; gap:22px; flex-wrap:wrap"><a href="privacy.html">プライバシーポリシー</a><a href="terms.html">利用規約</a><a href="support.html">お問い合わせ</a></div>
+    </div>
+  </footer>
+</body>
+</html>
